@@ -10,6 +10,7 @@ public class Main {
 //		hello.main();	// main메서드가 private이라서 외부 호출 불가
 		
 		// Reflection API를 사용 - 클래스 정보를 얻고 다룰 수 있는 강력한 기능 제공
+		//	-> 스프링 프레임웍에서 많이 사용된다!
 		// java.lang.reflect패키지를 제공
 		
 		// Hello클래스의 Class객체(클래스의 정보를 담고 있는 객체)를 얻어온다
