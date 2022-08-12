@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class YoilTellerMVC {
+public class YoilTellerMVC2 {
 
 	// 예외처리 메서드
 	@ExceptionHandler(Exception.class)
@@ -18,7 +18,7 @@ public class YoilTellerMVC {
 		return "yoilError";
 	}
 
-	@RequestMapping("/getYoilMVC") // http://localhost/ch2/getYoilMVC
+	@RequestMapping("/getYoilMVC2") // http://localhost/ch2/getYoilMVC2
 	public String main(@RequestParam(required = true) int year, @RequestParam(required = true) int month,
 			@RequestParam(required = true) int day, Model model) {
 
