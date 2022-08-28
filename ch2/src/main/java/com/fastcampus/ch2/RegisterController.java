@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class RegisterController {
 	
 //	@RequestMapping(value="/register/add", method= {RequestMethod.GET, RequestMethod.POST})	// 신규회원 가입 화면
-//	@RequestMapping("/register/add")	// 신규회원 가입 화면
+	@RequestMapping("/register/add")	// 신규회원 가입 화면
 //	@GetMapping("/register/add")
-//	public String register() {
-//		return "registerForm";	// WEB-INF/views/registerForm.jsp
-//	}
+	public String register() {
+		return "registerForm";	// WEB-INF/views/registerForm.jsp
+	}
 	
 //	@RequestMapping(value="/register/save", method=RequestMethod.POST)	// POST방식만 허용. GET방식은 허용하지 않음
 	// 위에 코드가 너무 길기 때문에 간략하게!
@@ -32,7 +32,7 @@ public class RegisterController {
 //			return "redirect:/register/add";
 			
 			// 위 두 줄을 한번에 해결
-			return "redirect:/register/add?msg="+msg;	// URL 재작성(rewriting)
+			return "forward:/register/add?msg="+msg;	// URL 재작성(rewriting)
 		}
 		
 		// 2. DB에 신규회원 정보를 저장
