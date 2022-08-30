@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +31,9 @@ public class LonginController {
 	}
 
 	@PostMapping("/login")
-	public String login(String id, String pwd, boolean rememberId, 
+	// @CookieValue는 쿠키중 해당 아이디의 값을 넘겨준다
+	// @CookieValue("id") String cookieId
+	public String login(String id, String pwd, boolean rememberId, String toURL,
 							HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		// 쿼리스트링 값들이 어떤식으로 들어오는가 확인
@@ -66,7 +69,9 @@ public class LonginController {
 			response.addCookie(cookie);
 		}
 		// 3. 홈으로
-		return "redirect:/";
+		toURL = toURL==null || toURL.equals("") ? "/" : toURL;
+		
+		return "redirect:" + toURL;
 	}
 
 	private boolean loginCheck(String id, String pwd) {
