@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 //모든 컨트롤러에서 발생하는 예외를 잡을수 있는 애너테이션
 //@ControllerAdvice	// 모든 패키지에 발생한 예외 처리
-@ControllerAdvice("com.fastcampus.ch2")	// 지정된 패키지에서 발생한 예외만 처리
+@ControllerAdvice("com.fastcampus.ch3")	// 지정된 패키지에서 발생한 예외만 처리
 public class GlobalCatcher {
 
 	// 예외 처리를 중복하지 않기 위해

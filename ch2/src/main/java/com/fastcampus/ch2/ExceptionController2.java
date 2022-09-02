@@ -2,10 +2,22 @@ package com.fastcampus.ch2;
 
 import java.io.FileNotFoundException;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+// 사용자 정의 예외
+@ResponseStatus(HttpStatus.BAD_REQUEST)	// 500 -> 400
+class MyException extends RuntimeException{
+	MyException(String msg){
+		super(msg);
+	}
+	
+	MyException(){
+		this("");
+	}
+}
 
 @Controller
 public class ExceptionController2 {	// 컨트롤러 내에서만 작동하므로 (ExceptionController와)중복이 생긴 경우 
@@ -26,7 +38,7 @@ public class ExceptionController2 {	// 컨트롤러 내에서만 작동하므로
 
 	@RequestMapping("/ex4")
 	public String main() throws Exception {
-		throw new Exception("예외가 발생했습니다");
+		throw new MyException("예외가 발생했습니다");
 	}
 
 	@RequestMapping("/ex5")

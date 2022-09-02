@@ -2,10 +2,12 @@ package com.fastcampus.ch2;
 
 import java.io.FileNotFoundException;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
 public class ExceptionController { // 컨트롤러 내에서만 사용 가능
@@ -13,12 +15,14 @@ public class ExceptionController { // 컨트롤러 내에서만 사용 가능
 	// 예외 처리를 중복하지 않기 위해
 	// NullPointerException, FileNotFoundException을 제외하고 다 여기서 처리
 	@ExceptionHandler(Exception.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)	// 500번 상태코드 (200 -> 500)
 	public String catcher(Exception ex, Model m) { // catch블럭이라고 생각하면 된다
 		// 동일한 모델을 받는지 테스트
-		System.out.println("m=" + m);
+//		System.out.println("m=" + m);
 
 		System.out.println("catcher() in ExcecptionController");
-		m.addAttribute("ex", ex);
+		// error.jsp에서 isErrorPage="true"를 했기 때문에 모델을 생성해서 전달해줄 필요가 없다
+//		m.addAttribute("ex", ex);
 		return "error";
 	}
 
