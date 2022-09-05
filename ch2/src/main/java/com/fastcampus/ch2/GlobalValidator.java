@@ -4,7 +4,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-public class UserValidator implements Validator {
+public class GlobalValidator implements Validator {
 	
 	@Override
 	public boolean supports(Class<?> clazz) { // 검증이 가능한가?
@@ -16,7 +16,7 @@ public class UserValidator implements Validator {
 	public void validate(Object target, Errors errors) {	// 검증할 객체, 검증시 발생한 에러 저장소
 
 		// 위에서 검증했기 때문에 target이 User의 인스턴스인지 확인할 필요가 없다
-		System.out.println("UserValidator.validate() is called");
+		System.out.println("GlobalValidator.validate() is called");
 
 		User user = (User) target;
 
@@ -30,7 +30,8 @@ public class UserValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "pwd", "required");
 
 		if (id == null || id.length() < 5 || id.length() > 12) {
-			errors.rejectValue("id", "invalidLength");
+			//														0부터 시작해서 빈문자 추가
+			errors.rejectValue("id", "invalidLength", new String[] {"", "5", "12"}, null);
 		}
 	}
 }

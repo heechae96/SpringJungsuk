@@ -1,24 +1,18 @@
 package com.fastcampus.ch2;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringArrayPropertyEditor;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class RegisterController {
@@ -36,7 +30,10 @@ public class RegisterController {
 //		System.out.println("conversionService = " + conversionService);
 		
 		// 데이터의 검증(자동)
-		binder.setValidator(new UserValidator()); // UserValidator를 WebDateBinder의 로컬 Validator로 저장
+//		binder.setValidator(new UserValidator()); // UserValidator를 WebDateBinder의 로컬 Validator로 저장
+//		binder.addValidators(new UserValidator()); // 글로벌 Validator와 로컬 Validator를 동시에 적용하는법
+		List<Validator> validatorList = binder.getValidators();
+		System.out.println("validatorList : " + validatorList);
 	}
 	
 //	@RequestMapping(value="/register/add", method= {RequestMethod.GET, RequestMethod.POST})	// 신규회원 가입 화면
