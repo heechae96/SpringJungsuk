@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Component class Truck extends Car {
 }
 
-class Engine {	// @Component빼면 등록이 안된다
+@Component class Engine {	// @Component빼면 등록이 안된다
 }
 
 class AppContext {
@@ -53,8 +53,17 @@ class AppContext {
 		}
 	}
 
-	Object getBean(String key) {
+	Object getBean(String key) {	// by Name
 		return map.get(key);
+	}
+	
+	Object getBean(Class clazz) {	// by Type
+		for(Object obj : map.values()) {
+			if(clazz.isInstance(obj)) {
+				return obj;
+			}
+		}
+		return null;
 	}
 
 }
@@ -65,11 +74,15 @@ public class Main3 {
 
 		AppContext ac = new AppContext();
 
-		Car car = (Car) ac.getBean("car");
+		Car car = (Car) ac.getBean("car");		// by Name으로 객체를 검색
+		Car car2 = (Car) ac.getBean(Car.class);	// by Type으로 객체를 검색
 		Engine engine = (Engine) ac.getBean("engine");
+		Engine engine2 = (Engine) ac.getBean(Engine.class);
 
 		System.out.println("car = " + car);
+		System.out.println("car2 = " + car2);
 		System.out.println("engine = " + engine);
+		System.out.println("engine = " + engine2);
 
 	}
 
