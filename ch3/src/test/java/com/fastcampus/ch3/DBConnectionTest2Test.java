@@ -27,6 +27,49 @@ public class DBConnectionTest2Test {
 	// -> 테스트가 성공 할 수 있도록 코드를 작성해야 한다
 
 	@Test
+	public void transactionTest() throws Exception {
+
+		Connection conn = null;
+
+		try {
+			deleteAll();
+			conn = ds.getConnection();
+			conn.setAutoCommit(false); // 디폴트가 true
+
+			// insert into user_info (id, pwd, name, email, birth, sns, reg_date) values
+			// ('asdf', '1234', 'shin', 'shin@aaa.com', '1996-01-05', 'facebook', now())
+
+			// 값이 들어갈 곳을 물음표 처리
+			String sql = "insert into user_info values (?,?,?,?,?,?,now())";
+			PreparedStatement pstmt = conn.prepareStatement(sql); // Statement와 다르게 SQL Injection 공격에 방어, 성능 향상
+
+			// 물음표에 값을 채우기
+			pstmt.setString(1, "asdf");
+			pstmt.setString(2, "1234");
+			pstmt.setString(3, "abc");
+			pstmt.setString(4, "aaa@aaa.com");
+			pstmt.setDate(5, new java.sql.Date(new Date().getTime())); // sql.Date -> Date
+			pstmt.setString(6, "fb");
+
+			// 반환값이 int. 실패하면 0, 성공하면 반영된 행(row)만큼.
+			// select문을 제외한 insert, update, delete만 가능. select는 executeQuery로.
+			int rowCnt = pstmt.executeUpdate();
+
+			pstmt.setString(1, "asdf2");
+			rowCnt = pstmt.executeUpdate();
+
+			conn.commit(); // 수동으로 커밋
+
+		} catch (Exception e) {
+			conn.rollback(); // 예외 발생하면 롤백
+			e.printStackTrace();
+		} finally {
+			// TODO: handle finally clause
+		}
+
+	}
+
+	@Test
 	public void springJdbcConnectionTest() throws Exception {
 //		ApplicationContext ac = new GenericXmlApplicationContext(
 //				"file:src/main/webapp/WEB-INF/spring/**/root-context.xml");
@@ -73,24 +116,24 @@ public class DBConnectionTest2Test {
 
 		assertTrue(rowCnt == 1);
 	}
-	
+
 	// updateUser 수정하면서 좀 더 손보기
 	@Test
-	public void updateUserTest() throws Exception{
+	public void updateUserTest() throws Exception {
 		deleteAll();
 		int rowCnt = deleteUser("asdf2");
 		assertTrue(rowCnt == 0);
-		
+
 		User user = new User("asdf2", "1234", "abc", "aaaa@aaa.com", new Date(), "fb", new Date());
 		rowCnt = insertUser(user);
 		assertTrue(rowCnt == 1);
-		
+
 		String id = "asdf2";
 		rowCnt = updateUser(id);
 		assertTrue(rowCnt == 1);
-		
+
 		User user2 = selectUser("asdf2");
-		
+
 		assertTrue(!user2.getPwd().equals("1234"));
 	}
 
