@@ -77,7 +77,9 @@ public class BoardDto {
 
     @Override
     public String toString() {
-        return "BoardDto{" + "bno=" + bno + ", title='" + title + '\'' + ", content='" + content + '\'' + ", writer='" + writer + '\'' + ", view_cnt=" + view_cnt + ", comment_cnt=" + comment_cnt + ", reg_date=" + reg_date + '}';
+        return "BoardDto{" + "bno=" + bno + ", title='" + title + '\'' + ", content='" + content + '\''
+                + ", writer='" + writer + '\'' + ", view_cnt=" + view_cnt + ", comment_cnt="
+                + comment_cnt + ", reg_date=" + reg_date + '}';
     }
 
     @Override
@@ -85,7 +87,8 @@ public class BoardDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BoardDto boardDto = (BoardDto) o;
-        return Objects.equals(bno, boardDto.bno) && Objects.equals(title, boardDto.title) && Objects.equals(content, boardDto.content) && Objects.equals(writer, boardDto.writer);
+        return Objects.equals(bno, boardDto.bno) && Objects.equals(title, boardDto.title)
+                && Objects.equals(content, boardDto.content) && Objects.equals(writer, boardDto.writer);
     }
 
     @Override
