@@ -23,6 +23,56 @@ public class BoardController {
     @Autowired
     BoardService boardService;
 
+    @PostMapping("/modify")
+    public String modify(BoardDto boardDto, Model m, HttpSession session, RedirectAttributes rattr){
+        String writer = (String) session.getAttribute("id");
+        boardDto.setWriter(writer);
+
+        try {
+            int rowCnt = boardService.modify(boardDto);   // update
+
+            if(rowCnt!=1)
+                throw new Exception("Modify failed");
+
+            rattr.addFlashAttribute("msg", "Modify OK");
+
+            return "redirect:/board/list";
+        } catch (Exception e) {
+            e.printStackTrace();
+            m.addAttribute(boardDto);   // 내용을 살려두기 위해서 -> 나중에 사용 할 수도 있기 때문
+            m.addAttribute("msg", "Modify Error");
+            return "board";
+        }
+    }
+
+    @PostMapping("/write")
+    public String write(BoardDto boardDto, Model m, HttpSession session, RedirectAttributes rattr){
+        String writer = (String) session.getAttribute("id");
+        boardDto.setWriter(writer);
+
+        try {
+            int rowCnt = boardService.write(boardDto);   // insert
+
+            if(rowCnt!=1)
+                throw new Exception("Write failed");
+
+            rattr.addFlashAttribute("msg", "Write OK");
+
+            return "redirect:/board/list";
+        } catch (Exception e) {
+            e.printStackTrace();
+            m.addAttribute(boardDto);   // 내용을 살려두기 위해서 -> 나중에 사용 할 수도 있기 때문
+            m.addAttribute("msg", "Write Error");
+            return "board";
+        }
+    }
+
+    @GetMapping("/write")
+    public String wirte(Model m){
+        m.addAttribute("mode", "new");
+        return "board"; // 읽기와 쓰기에 사용하는데, 쓰기에 사용할때는 mode = new
+    }
+
     @PostMapping("/remove")
     public String remove(Integer bno, Integer page, Integer pageSize, Model m, HttpSession session, RedirectAttributes rattr) {
         String writer = (String) session.getAttribute("id");
