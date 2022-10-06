@@ -2,6 +2,7 @@ package com.fastcampus.ch4.controller;
 
 import com.fastcampus.ch4.domain.BoardDto;
 import com.fastcampus.ch4.domain.PageHandler;
+import com.fastcampus.ch4.domain.SearchCondition;
 import com.fastcampus.ch4.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,9 +14,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/board")
@@ -24,51 +26,51 @@ public class BoardController {
     BoardService boardService;
 
     @PostMapping("/modify")
-    public String modify(BoardDto boardDto, Model m, HttpSession session, RedirectAttributes rattr){
+    public String modify(BoardDto boardDto, Model m, HttpSession session, RedirectAttributes rattr) {
         String writer = (String) session.getAttribute("id");
         boardDto.setWriter(writer);
 
         try {
             int rowCnt = boardService.modify(boardDto);   // update
 
-            if(rowCnt!=1)
+            if (rowCnt != 1)
                 throw new Exception("Modify failed");
 
-            rattr.addFlashAttribute("msg", "Modify OK");
+            rattr.addFlashAttribute("msg", "MOD_OK");
 
             return "redirect:/board/list";
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute(boardDto);   // 내용을 살려두기 위해서 -> 나중에 사용 할 수도 있기 때문
-            m.addAttribute("msg", "Modify Error");
+            m.addAttribute("msg", "MOD_ERR");
             return "board";
         }
     }
 
     @PostMapping("/write")
-    public String write(BoardDto boardDto, Model m, HttpSession session, RedirectAttributes rattr){
+    public String write(BoardDto boardDto, Model m, HttpSession session, RedirectAttributes rattr) {
         String writer = (String) session.getAttribute("id");
         boardDto.setWriter(writer);
 
         try {
             int rowCnt = boardService.write(boardDto);   // insert
 
-            if(rowCnt!=1)
+            if (rowCnt != 1)
                 throw new Exception("Write failed");
 
-            rattr.addFlashAttribute("msg", "Write OK");
+            rattr.addFlashAttribute("msg", "WRT_OK");
 
             return "redirect:/board/list";
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute(boardDto);   // 내용을 살려두기 위해서 -> 나중에 사용 할 수도 있기 때문
-            m.addAttribute("msg", "Write Error");
+            m.addAttribute("msg", "WRT_ERR");
             return "board";
         }
     }
 
     @GetMapping("/write")
-    public String wirte(Model m){
+    public String wirte(Model m) {
         m.addAttribute("mode", "new");
         return "board"; // 읽기와 쓰기에 사용하는데, 쓰기에 사용할때는 mode = new
     }
@@ -89,11 +91,11 @@ public class BoardController {
             // reload할때마다 뜨는걸 방지!
             // session에 부담이 적음
 //            m.addAttribute("msg", "Delete OK");
-            rattr.addFlashAttribute("msg", "Delete OK");
+            rattr.addFlashAttribute("msg", "DEL_OK");
         } catch (Exception e) {
             e.printStackTrace();
 //            m.addAttribute("msg", "Delete Error");
-            rattr.addFlashAttribute("msg", "Delete Error");
+            rattr.addFlashAttribute("msg", "DEL_ERR");
         }
 
         return "redirect:/board/list";  // 모델에 담아서 보내면 자동으로 ?page=n&pageSize=n이 붙는다
@@ -115,31 +117,28 @@ public class BoardController {
     }
 
     @GetMapping("/list")
-    public String list(Integer page, Integer pageSize, Model m, HttpServletRequest request) {
+    public String list(Model m, SearchCondition sc, HttpServletRequest request) {
         if (!loginCheck(request))
             return "redirect:/login/login?toURL=" + request.getRequestURL();  // 로그인을 안했으면 로그인 화면으로 이동
 
-        if (page == null)
-            page = 1;
-        if (pageSize == null)
-            pageSize = 10;
-
         try {
-            int totalCnt = boardService.getCount();
-            PageHandler pageHandler = new PageHandler(totalCnt, page, pageSize);
+            int totalCnt = boardService.getSearchResultCnt(sc);
+            m.addAttribute("totalCnt", totalCnt);
 
-            Map map = new HashMap();
-            map.put("offset", (page - 1) * pageSize);
-            map.put("pageSize", pageSize);
+            PageHandler pageHandler = new PageHandler(totalCnt, sc);
 
-            List<BoardDto> list = boardService.getPage(map);
+            List<BoardDto> list = boardService.getSearchResultPage(sc);
             m.addAttribute("list", list);
             m.addAttribute("ph", pageHandler);
-            m.addAttribute("page", page);
-            m.addAttribute("pageSize", pageSize);
+
+            Instant startOfToday = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant();
+            m.addAttribute("startOfToday", startOfToday.toEpochMilli());
         } catch (Exception e) {
             e.printStackTrace();
+            m.addAttribute("msg", "LIST_ERR");
+            m.addAttribute("totalCnt", 0);
         }
+
         return "boardList"; // 로그인을 한 상태이면, 게시판 화면으로 이동
     }
 

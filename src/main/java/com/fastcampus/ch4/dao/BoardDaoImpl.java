@@ -77,5 +77,4 @@ public class BoardDaoImpl implements BoardDao {
         return session.selectOne(namespace + "searchResultCnt", sc);
     } // T selectOne(String statement)
 
-
 }

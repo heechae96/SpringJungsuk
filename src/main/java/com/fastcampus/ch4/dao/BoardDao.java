@@ -35,7 +35,6 @@ public interface BoardDao {
     ;
 
     // 검색 기능에 사용
-    List<BoardDto> searchSelectPage(SearchCondition sc) throws Exception;
-
     int searchResultCnt(SearchCondition sc) throws Exception;
+    List<BoardDto> searchSelectPage(SearchCondition sc) throws Exception;
 }
