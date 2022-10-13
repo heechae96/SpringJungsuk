@@ -4,31 +4,36 @@
 
 <mapper namespace="com.fastcampus.ch4.dao.CommentMapper">
     <delete id="deleteAll" parameterType="int">
-        DELETE FROM comment
-        WHERE  bno = #{bno}
+        DELETE
+        FROM comment
+        WHERE bno = #{bno}
     </delete>
 
     <select id="count" parameterType="int" resultType="int">
-        SELECT count(*) FROM comment
-        WHERE  bno = #{bno}
+        SELECT count(*)
+        FROM comment
+        WHERE bno = #{bno}
     </select>
 
     <delete id="delete" parameterType="map">
-        DELETE FROM comment WHERE cno = #{cno} AND commenter = #{commenter}
+        DELETE
+        FROM comment
+        WHERE cno = #{cno}
+          AND commenter = #{commenter}
     </delete>
 
     <insert id="insert" parameterType="CommentDto">
         INSERT INTO comment
             (bno, pcno, comment, commenter, reg_date, up_date)
-        VALUES
-            (#{bno}, #{pcno}, #{comment}, #{commenter}, now(), now())
+        VALUES (#{bno}, #{pcno}, #{comment}, #{commenter}, now(), now())
     </insert>
 
     <select id="selectAll" parameterType="int" resultType="CommentDto">
-        SELECT cno, bno, pcno, comment, commenter, reg_date, up_date
+        -- 답글때문에 일부 수정했음
+        SELECT cno, bno, ifnull(pcno, cno) as pcno, comment, commenter, reg_date, up_date
         FROM comment
         WHERE bno = #{bno}
-        ORDER BY reg_date ASC, cno ASC
+        ORDER BY pcno asc, cno asc;
     </select>
 
     <select id="select" parameterType="int" resultType="CommentDto">
@@ -41,7 +46,8 @@
         UPDATE comment
         SET comment = #{comment}
           , up_date = now()
-        WHERE cno = #{cno} and commenter = #{commenter}
+        WHERE cno = #{cno}
+          and commenter = #{commenter}
     </update>
 
     <update id="updateCommentCnt" parameterType="map">
