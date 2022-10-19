@@ -11,7 +11,11 @@
 	</appender>
 	
 	<!-- Application Loggers -->
+<<<<<<< HEAD
 	<logger name="com.fastcampus.ch3">
+=======
+	<logger name="com.fastcampus.ch4">
+>>>>>>> 8de1748104172b492be2d473754fe40441d6fd72
 		<level value="info" />
 	</logger>
 	

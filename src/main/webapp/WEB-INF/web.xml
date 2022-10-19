@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+<<<<<<< HEAD
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
 	<!-- The definition of the Root Spring Container shared by all Servlets 
 		and Filters -->
+=======
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
+>>>>>>> 8de1748104172b492be2d473754fe40441d6fd72
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/spring/root-context.xml</param-value>
@@ -30,7 +37,10 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8de1748104172b492be2d473754fe40441d6fd72
 	<!-- 한글 변환 필터 시작 -->
 	<filter>
 		<filter-name>encodingFilter</filter-name>
@@ -50,5 +60,9 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	<!-- 한글 변환 필터 끝 -->
+<<<<<<< HEAD
 
 </web-app>
+=======
+</web-app>
+>>>>>>> 8de1748104172b492be2d473754fe40441d6fd72

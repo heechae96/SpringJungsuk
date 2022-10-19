@@ -6,13 +6,21 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+<<<<<<< HEAD
         <module name="ch3" />
+=======
+        <module name="ch4" />
+>>>>>>> 8de1748104172b492be2d473754fe40441d6fd72
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+<<<<<<< HEAD
       <module name="ch3" options="-Xlint:all" />
+=======
+      <module name="ch4" options="-Xlint:all" />
+>>>>>>> 8de1748104172b492be2d473754fe40441d6fd72
     </option>
   </component>
 </project>
